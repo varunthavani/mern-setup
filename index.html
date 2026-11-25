@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" style="background: #2b3324">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>%WEDDING_TITLE%</title>
+    <meta name="description" content="%WEDDING_DESCRIPTION%" />
+    <meta name="theme-color" content="#414C37" />
+    <meta name="color-scheme" content="light" />
+
+    <!-- Open Graph / WhatsApp preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="%WEDDING_TITLE%" />
+    <meta property="og:description" content="%WEDDING_DESCRIPTION%" />
+    <meta property="og:image" content="%WEDDING_IMAGE%" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="%WEDDING_URL%" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="%WEDDING_TITLE%" />
+    <meta name="twitter:description" content="%WEDDING_DESCRIPTION%" />
+    <meta name="twitter:image" content="%WEDDING_IMAGE%" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Critical cover artwork: the closed invitation paints immediately -->
+    <link rel="preload" as="image" href="/assets/invitation/flap-sm.webp" media="(max-width: 700px)" />
+    <link rel="preload" as="image" href="/assets/invitation/flap-r-sm.webp" media="(max-width: 700px)" />
+    <link rel="preload" as="image" href="/assets/invitation/flap.webp" media="(min-width: 701px)" />
+    <link rel="preload" as="image" href="/assets/invitation/flap-r.webp" media="(min-width: 701px)" />
+    <link rel="preload" as="image" href="/assets/invitation/seal.webp" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <p style="color:#FFF5E5;text-align:center;padding:2rem;font-family:serif">%WEDDING_TITLE% — please enable JavaScript to open the invitation.</p>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

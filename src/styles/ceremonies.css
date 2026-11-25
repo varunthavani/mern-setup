@@ -1,0 +1,383 @@
+/* ==========================================================================
+   Ceremony themes — each ritual has its own palette & background motif.
+   Add a theme: define --accent / --tint / --deep / --motif under .theme-NAME
+   ========================================================================== */
+.theme-kumkum {
+  --accent: #b4302e;
+  --tint: #fbe9e1;
+  --deep: #7a1f24;
+  --motif: radial-gradient(circle at 50% 50%, rgba(180, 48, 46, 0.14) 2px, transparent 3px) 0 0 / 22px 22px;
+}
+.theme-divine {
+  --accent: #b58a45;
+  --tint: #fff4dc;
+  --deep: #6b4f1f;
+  --motif: repeating-conic-gradient(from 0deg at 50% 100%, rgba(233, 207, 142, 0.35) 0 6deg, transparent 6deg 18deg);
+}
+.theme-marigold {
+  --accent: #e08a1e;
+  --tint: #fff1d6;
+  --deep: #8f4f0f;
+  --motif: radial-gradient(circle, rgba(240, 164, 42, 0.22) 5px, transparent 6px) 0 0 / 30px 30px, radial-gradient(circle, rgba(99, 122, 72, 0.18) 3px, transparent 4px) 15px 15px / 30px 30px;
+}
+.theme-agni {
+  --accent: #d0541c;
+  --tint: #fde8d6;
+  --deep: #7a2e10;
+  --motif: radial-gradient(ellipse at 50% 120%, rgba(240, 122, 26, 0.35), transparent 60%);
+}
+.theme-mehndi {
+  --accent: #637a48;
+  --tint: #edf1e2;
+  --deep: #3e4f2b;
+  --motif: radial-gradient(circle at 0 0, transparent 9px, rgba(99, 122, 72, 0.22) 10px, transparent 11px) 0 0 / 24px 24px, radial-gradient(circle at 12px 12px, rgba(99, 122, 72, 0.2) 2px, transparent 3px) 0 0 / 24px 24px;
+}
+.theme-haldi {
+  --accent: #d99a1e;
+  --tint: #fff4c9;
+  --deep: #8a5d0a;
+  --motif: radial-gradient(circle, rgba(234, 184, 75, 0.35) 6px, transparent 7px) 0 0 / 34px 34px, linear-gradient(135deg, rgba(255, 220, 120, 0.4), transparent);
+}
+.theme-rose {
+  --accent: #c9475b;
+  --tint: #fbeaea;
+  --deep: #782c3b;
+  --motif: radial-gradient(circle, rgba(221, 165, 164, 0.35) 4px, transparent 5px) 0 0 / 26px 26px;
+}
+.theme-garba {
+  --accent: #c2582b;
+  --tint: #fdf0e3;
+  --deep: #6b2b14;
+  --motif: conic-gradient(from 45deg, rgba(194, 88, 43, 0.16) 25%, rgba(234, 184, 75, 0.18) 0 50%, rgba(47, 110, 90, 0.14) 0 75%, rgba(221, 165, 164, 0.18) 0) 0 0 / 28px 28px;
+}
+.theme-royal {
+  --accent: #782c3b;
+  --tint: #f7ecdf;
+  --deep: #4b1a25;
+  --motif: repeating-linear-gradient(90deg, rgba(120, 44, 59, 0.1) 0 10px, transparent 10px 22px);
+}
+.theme-sacred {
+  --accent: #b4302e;
+  --tint: #fff2e0;
+  --deep: #6e1d1f;
+  --motif: radial-gradient(circle at 50% 50%, rgba(255, 214, 140, 0.55), transparent 65%);
+}
+.theme-dusk {
+  --accent: #8a6a8e;
+  --tint: #f4ebf2;
+  --deep: #4c3550;
+  --motif: linear-gradient(180deg, rgba(138, 106, 142, 0.18), rgba(221, 165, 164, 0.2));
+}
+
+/* ==========================================================================
+   Journey map
+   ========================================================================== */
+.journey {
+  list-style: none;
+  margin: 0 auto 30px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 10px;
+  max-width: 980px;
+}
+@media (max-width: 700px) {
+  .journey {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 6px var(--gutter) 12px;
+    scrollbar-width: none;
+  }
+  .journey::-webkit-scrollbar {
+    display: none;
+  }
+  .journey li {
+    flex: 0 0 96px;
+    scroll-snap-align: start;
+  }
+}
+.journey__item {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 10px 4px 8px;
+  border: 1px solid rgba(181, 138, 69, 0.35);
+  border-radius: 999px 999px 10px 10px / 60px 60px 10px 10px;
+  background: rgba(255, 252, 245, 0.75);
+  transition: transform 0.3s var(--ease), background 0.3s, border-color 0.3s;
+}
+.journey__item:hover,
+.journey__item.is-active {
+  transform: translateY(-3px);
+  background: var(--tint);
+  border-color: var(--accent);
+}
+.journey__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff, var(--tint));
+  box-shadow: 0 0 0 1px rgba(181, 138, 69, 0.5);
+  padding: 4px;
+}
+.journey__name {
+  font-size: 0.82rem;
+  line-height: 1.25;
+  color: var(--deep);
+  font-weight: 600;
+  min-height: 2.5em;
+  display: flex;
+  align-items: center;
+}
+.journey__date {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+}
+
+/* ==========================================================================
+   Carousel of ceremony chapters
+   ========================================================================== */
+.carousel {
+  position: relative;
+  margin: 0 calc(-1 * max(var(--gutter), calc((100vw - var(--content)) / 2)));
+}
+.carousel__track {
+  display: flex;
+  gap: clamp(12px, 3vw, 26px);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 10px max(7vw, calc((100% - 760px) / 2)) 30px;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.carousel__track::-webkit-scrollbar {
+  display: none;
+}
+.carousel__track:focus-visible {
+  outline-offset: -4px;
+}
+.carousel__nav {
+  position: absolute;
+  top: 40%;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(181, 138, 69, 0.7);
+  background: rgba(255, 250, 240, 0.92);
+  color: var(--c-heritage);
+  box-shadow: 0 8px 18px -10px rgba(60, 45, 30, 0.6);
+  transition: opacity 0.3s;
+}
+.carousel__nav:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+.carousel__nav--prev {
+  left: max(6px, calc((100% - 860px) / 2));
+}
+.carousel__nav--next {
+  right: max(6px, calc((100% - 860px) / 2));
+}
+@media (max-width: 560px) {
+  .carousel__nav {
+    top: 22%;
+    width: 38px;
+    height: 38px;
+  }
+}
+.carousel__progress {
+  width: min(70%, 320px);
+  height: 3px;
+  margin: 0 auto;
+  background: rgba(181, 138, 69, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.carousel__progress span {
+  display: block;
+  height: 100%;
+  background: var(--gold-grad);
+  transition: width 0.4s var(--ease);
+}
+.carousel__count {
+  margin-top: 8px;
+  font-family: var(--f-display);
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  color: var(--c-gold);
+}
+html[data-lang="gu"] .carousel__count {
+  font-family: var(--f-gu);
+  letter-spacing: 0;
+  font-size: 0.9rem;
+}
+
+.chapter {
+  flex: 0 0 min(86vw, 760px);
+  scroll-snap-align: center;
+  display: grid;
+  background: #fffcf6;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  outline: 1px solid rgba(181, 138, 69, 0.35);
+  outline-offset: -8px;
+  box-shadow: 0 30px 40px -30px rgba(60, 45, 30, 0.55);
+  text-align: center;
+  transition: transform 0.6s var(--ease), opacity 0.6s var(--ease);
+  opacity: 0.6;
+  transform: scale(0.95);
+}
+.chapter.is-current {
+  opacity: 1;
+  transform: none;
+}
+@media (min-width: 760px) {
+  .chapter {
+    grid-template-columns: 0.9fr 1.1fr;
+    text-align: left;
+  }
+}
+.chapter__window {
+  position: relative;
+  margin: 14px 14px 0;
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px 999px 0 0 / 120px 120px 0 0;
+  background: var(--tint);
+  overflow: hidden;
+}
+@media (min-width: 760px) {
+  .chapter__window {
+    margin: 14px 0 14px 14px;
+  }
+}
+.chapter__pattern {
+  position: absolute;
+  inset: 0;
+  background: var(--motif);
+  opacity: 0.9;
+}
+.chapter__window::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.chapter__art {
+  position: relative;
+  width: min(72%, 240px);
+  height: auto;
+  filter: drop-shadow(0 10px 12px rgba(60, 45, 30, 0.2));
+}
+.chapter.is-current .chapter__art {
+  animation: art-in 1s var(--ease) both;
+}
+@keyframes art-in {
+  from {
+    transform: translateY(14px) scale(0.94);
+    opacity: 0.4;
+  }
+}
+.chapter__body {
+  padding: 18px clamp(18px, 4vw, 30px) 26px;
+  display: grid;
+  gap: 8px;
+  align-content: center;
+}
+.chapter__body .divider {
+  margin-inline: auto;
+}
+@media (min-width: 760px) {
+  .chapter__body .divider {
+    margin-inline: 0;
+  }
+}
+.chapter__count {
+  font-family: var(--f-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+}
+.chapter__title {
+  display: grid;
+  gap: 2px;
+  line-height: 1.25;
+}
+.chapter__title .gu {
+  font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  font-weight: 600;
+  color: var(--deep);
+}
+.chapter__title-en {
+  font-family: var(--f-script);
+  font-size: clamp(1.6rem, 1.4rem + 1vw, 2.1rem);
+  color: var(--accent);
+}
+.chapter__facts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 4px;
+}
+.chapter__facts li,
+.chapter__venue,
+.chapter__dress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--c-brown);
+  justify-content: center;
+}
+@media (min-width: 760px) {
+  .chapter__facts li,
+  .chapter__venue,
+  .chapter__dress {
+    justify-content: flex-start;
+  }
+}
+.chapter__facts svg,
+.chapter__venue svg,
+.chapter__dress svg {
+  flex: none;
+  color: var(--accent);
+}
+.chapter__tbd {
+  display: inline-block;
+  justify-self: center;
+  padding: 4px 14px;
+  border: 1px dashed var(--accent);
+  border-radius: 999px;
+  color: var(--deep);
+  font-style: italic;
+  font-size: 0.95rem;
+}
+@media (min-width: 760px) {
+  .chapter__tbd {
+    justify-self: start;
+  }
+}
+.chapter__desc {
+  color: var(--text-soft);
+}
+.chapter__dress {
+  font-size: 0.95rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--tint);
+  justify-self: center;
+}
+@media (min-width: 760px) {
+  .chapter__dress {
+    justify-self: start;
+  }
+}
