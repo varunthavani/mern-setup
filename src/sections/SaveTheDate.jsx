@@ -49,7 +49,7 @@ export default function SaveTheDate() {
     if (c) return toCalendarEvent(c, config, lang);
     return {
       id: "wedding",
-      title: `${tx(a.name)} & ${tx(b.name)} — Wedding`,
+      title: `${tx(a.name)} ${t("and")} ${tx(b.name)} — Wedding`,
       description: tx(config.intro.message),
       location: `${tx(config.venues[config.wedding.mainVenueId]?.name)}, ${tx(config.venues[config.wedding.mainVenueId]?.address)}`,
       date: config.wedding.date,
@@ -104,7 +104,7 @@ export default function SaveTheDate() {
       </div>
 
       {all.length > 1 && (
-        <button type="button" className="btn" data-reveal="fade" onClick={() => downloadIcs(all, tz, `${slug}-all-events.ics`, `${tx(a.name)} & ${tx(b.name)}`)}>
+        <button type="button" className="btn" data-reveal="fade" onClick={() => downloadIcs(all, tz, `${slug}-all-events.ics`, `${tx(a.name)} ${t("and")} ${tx(b.name)}`)}>
           <CalendarPlus size={18} aria-hidden="true" /> {t("allEvents")}
         </button>
       )}

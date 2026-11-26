@@ -8,6 +8,8 @@ const translations = {
   skipIntro: { en: "Skip intro", gu: "આગળ વધો" },
   youAreInvited: { en: "You are cordially invited", gu: "આપને ભાવભર્યું આમંત્રણ" },
   scrollToBegin: { en: "Scroll to begin", gu: "આગળ જોવા સ્ક્રોલ કરો" },
+  // joins the couple names: "Maulik & Radhika" / "મૌલિક અને રાધિકા"
+  and: { en: "&", gu: "અને" },
 
   nav: {
     home: { en: "Home", gu: "મુખ્ય" },

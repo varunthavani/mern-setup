@@ -8,7 +8,6 @@ Every visual and audio asset in this project is **original work generated from c
 | --- | --- | --- |
 | `public/assets/invitation/flap*.webp` | Embossed sage botanical card flaps (paper grain, letterpress vines, lotus) | `scripts/art/scenes.mjs → invitationFlap()` |
 | `public/assets/invitation/seal.webp` | Antique gold scalloped seal | `seal()` |
-| `public/assets/curtains/panel.webp`, `valance*.webp`, `drape.webp` | Champagne silk curtain, swag valance with tassels, tied‑back drape | `curtainPanel()`, `valance()`, `cornerDrape()` |
 | `public/assets/backgrounds/garden-*.webp`, `venue-night.webp` | Royal palace, sky, cypress garden, fountain | `gardenSky()`, `gardenMid()` |
 | `public/assets/backgrounds/paper.webp` | Tileable ivory paper texture | `paper()` |
 | `public/assets/decorations/floral-*.webp` | Rose, blossom and leaf clusters | `floralCorner()`, `floralBorder()` |
@@ -18,6 +17,34 @@ Every visual and audio asset in this project is **original work generated from c
 Inline SVG illustrations (17 ceremony scenes, diyas, bells, kalash, toran, Om halo, mandap, couple, ornaments) are original React components in `src/components/art/` and `src/components/Ornaments.jsx`.
 
 Licence: original work for this project. Use it freely for this invitation.
+
+## Hero Section artwork, supplied masters optimised by `scripts/build-hero-assets.mjs`
+
+The royal palace hero (`public/assets/hero/`) is built from the high‑resolution transparent PNG masters supplied for the redesign. They include the palace gateway, tied‑back velvet curtains, swag valance, tiered fountain, cypress trees, garden plants, rose bouquets, carved pedestals, standing and hanging lanterns, gold dividers, lotus border and rose petals.
+
+To rebuild them, run `npm run assets:hero -- <folder-with-the-pngs>`. The script:
+
+* trims each image and resizes it to the sizes the layout uses, encoded as alpha WebP
+* cuts a portrait palace crop for phones and tablets
+* packs 12 petals into one sprite atlas
+* generates the closed velvet curtain panel procedurally (original SVG)
+
+Licence: supplied for this invitation by the couple.
+
+## Divine Blessing artwork, supplied masters optimised by `scripts/build-blessing-assets.mjs`
+
+The temple sanctum in `public/assets/blessings/` is built from the transparent PNG masters supplied for the Divine Blessing redesign: golden arch with kalash, diyas and lotuses, Om medallion, temple bell, marigold toran, two mango‑leaf strands, carved temple pillars and two banana‑leaf corner arrangements. The masters live in `assets-src/blessings/` (git‑ignored, like the hero masters).
+
+To rebuild them, run `npm run assets:blessings` (optionally `-- <folder>`). The script:
+
+* tints the faint red/yellow glow halo in the masters’ edge pixels towards ivory, then trims and encodes alpha WebP
+* splits the combined arch picture into independent layers: crown, a stretchable pillar shaft, two diyas, their flames, the kalash and two flower beds, cut with complementary masks so no pixel appears twice
+* builds a symmetric lotus bloom for beneath the Om by mirroring the unobstructed half of a lotus
+* cuts a seamless toran repeat tile (marigold centre to marigold centre) plus its two tasselled ends
+
+The section also reuses the hero’s palace (as the faded temple backdrop), scroll divider and petal sprites. The bottom border, cartouche fleurons and Om rays are inline CSS/SVG.
+
+Licence: supplied for this invitation by the couple.
 
 ## Music — original
 

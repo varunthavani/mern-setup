@@ -1,28 +1,18 @@
 import { memo } from "react";
 
-/** Top swag valance with tassels (shared by the curtain scene & welcome). */
+/**
+ * Royal swag valance with gold tassels. Shared by the curtain reveal and the
+ * hero so both render at exactly the same place: when the intro overlay is
+ * removed the hand-off is invisible.
+ */
 export const Valance = memo(function Valance({ className = "" }) {
+  // The swags are a seamless repeating strip, so the valance height is set
+  // by --valance-h (capped by the viewport height) rather than by its width.
   return (
-    <img
-      className={`valance ${className}`}
-      src="/assets/curtains/valance.webp"
-      srcSet="/assets/curtains/valance-sm.webp 900w, /assets/curtains/valance.webp 1600w"
-      sizes="100vw"
-      alt=""
-      aria-hidden="true"
-      decoding="async"
-      fetchPriority="high"
-    />
-  );
-});
-
-/** Curtains gathered and tied back at both sides. */
-export const SideDrapes = memo(function SideDrapes() {
-  return (
-    <>
-      <img className="drape drape--l" src="/assets/curtains/drape.webp" alt="" aria-hidden="true" decoding="async" />
-      <img className="drape drape--r" src="/assets/curtains/drape.webp" alt="" aria-hidden="true" decoding="async" />
-    </>
+    <div className={`valance ${className}`} aria-hidden="true">
+      <span className="valance__rod" />
+      <span className="valance__swags" />
+    </div>
   );
 });
 

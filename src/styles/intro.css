@@ -9,12 +9,13 @@
   touch-action: none;
 }
 
-/* ---------- Scene 02: silk curtains ---------- */
+/* ---------- Scene 02: royal velvet curtains ----------
+   The stage is transparent: as the panels part, the palace hero (already
+   mounted underneath) is revealed directly. */
 .curtains {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 42%, #fff6e2 0%, #ecd9b8 55%, #c3a77c 100%);
 }
 .curtains__glow {
   position: absolute;
@@ -32,7 +33,7 @@
   width: 50.4%;
   will-change: transform, opacity;
   z-index: 1;
-  filter: drop-shadow(0 0 18px rgba(60, 40, 20, 0.35));
+  filter: drop-shadow(0 0 24px rgba(40, 6, 12, 0.55));
 }
 .curtain--l {
   left: 0;
@@ -45,22 +46,50 @@
 .curtain__fabric {
   position: absolute;
   inset: 0;
-  background: url("/assets/curtains/panel.webp") center / 100% 100% no-repeat;
+  background: #650d1b url("/assets/hero/velvet-panel.webp") right center / cover no-repeat;
+}
+.curtain__fabric::after {
+  /* soft light falling across the velvet */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 55% at 90% 45%, rgba(255, 200, 150, 0.16), transparent 70%);
 }
 .curtain--r .curtain__fabric {
   transform: scaleX(-1);
 }
 
+/* Swag valance — shared with the hero, so both sit at the same spot.
+   Its height follows the viewport *height* as well as the width, so it never
+   crowds a short laptop window; the swag strip repeats to fill any width. */
+:root {
+  --valance-h: clamp(70px, min(8.7vw, 12.5svh), 170px);
+}
 .valance {
   position: absolute;
   top: 0;
-  left: 50%;
-  width: max(100%, 760px);
-  height: auto;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  height: var(--valance-h);
   z-index: 4;
   pointer-events: none;
-  filter: drop-shadow(0 6px 10px rgba(60, 40, 20, 0.25));
+}
+.valance__rod {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(7px, 0.75vw, 13px);
+  background: linear-gradient(180deg, #f3dfa6, #c49a48 45%, #7a5a24);
+  box-shadow: 0 2px 6px rgba(60, 30, 10, 0.35);
+  z-index: 1;
+}
+.valance__swags {
+  position: absolute;
+  inset: clamp(2px, 0.35vw, 5px) 0 0;
+  background: url("/assets/hero/valance-tile-sm.webp") center top / auto 100% repeat-x;
+  background-image: image-set(url("/assets/hero/valance-tile-sm.webp") 1x, url("/assets/hero/valance-tile.webp") 2x);
+  filter: drop-shadow(0 6px 8px rgba(70, 40, 10, 0.28));
 }
 
 /* ---------- Scene 01: closed invitation ---------- */

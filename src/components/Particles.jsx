@@ -10,8 +10,12 @@ const MARIGOLD_COLORS = ["#F6B93B", "#F0A42A", "#FBCB55", "#E08A1E"];
  * sparkles twinkling upward. Runs only while visible, pauses in hidden
  * tabs, caps DPR, scales counts with device quality, and renders nothing
  * for reduced-motion users.
+ *
+ * `sprite` (optional) — { src, count, cell }: a horizontal atlas of real
+ * petal images. Petals are drawn from it once it has loaded; until then (or
+ * if it fails) the vector petal shape is used.
  */
-function Particles({ petals = 14, gold = 24, palette = "rose", className = "", style }) {
+function Particles({ petals = 14, gold = 24, palette = "rose", sprite, className = "", style }) {
   const { reducedMotion, quality, config } = useApp();
   const wrapRef = useRef(null);
   const canvasRef = useRef(null);
@@ -19,6 +23,9 @@ function Particles({ petals = 14, gold = 24, palette = "rose", className = "", s
   const k = quality === "lite" ? 0.4 : 1;
   const nPetals = config.animation.petals ? Math.round(petals * k) : 0;
   const nGold = config.animation.goldParticles ? Math.round(gold * k) : 0;
+  const spriteSrc = sprite?.src;
+  const spriteCount = sprite?.count || 1;
+  const spriteCell = sprite?.cell || 72;
 
   useEffect(() => {
     if (reducedMotion || !inView || (!nPetals && !nGold)) return undefined;
@@ -40,6 +47,15 @@ function Particles({ petals = 14, gold = 24, palette = "rose", className = "", s
     ro.observe(canvas);
 
     const colors = palette === "marigold" ? MARIGOLD_COLORS : PETAL_COLORS;
+    let atlas = null;
+    if (spriteSrc) {
+      const img = new Image();
+      img.decoding = "async";
+      img.onload = () => {
+        atlas = img;
+      };
+      img.src = spriteSrc;
+    }
     const rand = (a, b) => a + Math.random() * (b - a);
     const mkPetal = (initial) => ({
       x: rand(0, w),
@@ -51,6 +67,7 @@ function Particles({ petals = 14, gold = 24, palette = "rose", className = "", s
       rot: rand(0, Math.PI * 2),
       vr: rand(-1.2, 1.2),
       c: colors[(Math.random() * colors.length) | 0],
+      tile: (Math.random() * spriteCount) | 0,
     });
     const mkGold = () => ({
       x: rand(0, w),
@@ -96,7 +113,13 @@ function Particles({ petals = 14, gold = 24, palette = "rose", className = "", s
         ctx.translate(p.x, p.y);
         ctx.rotate(p.rot);
         ctx.scale(1, 0.55 + 0.45 * Math.abs(Math.sin(p.phase * 1.3)));
-        ctx.globalAlpha = 0.85;
+        ctx.globalAlpha = 0.9;
+        if (atlas) {
+          const d = p.s * 2.4;
+          ctx.drawImage(atlas, p.tile * spriteCell, 0, spriteCell, spriteCell, -d / 2, -d / 2, d, d);
+          ctx.restore();
+          continue;
+        }
         ctx.fillStyle = p.c;
         ctx.beginPath();
         ctx.moveTo(0, -p.s);
@@ -122,7 +145,7 @@ function Particles({ petals = 14, gold = 24, palette = "rose", className = "", s
       document.removeEventListener("visibilitychange", onVis);
       ctx.clearRect(0, 0, w, h);
     };
-  }, [reducedMotion, inView, nPetals, nGold, palette, quality]);
+  }, [reducedMotion, inView, nPetals, nGold, palette, quality, spriteSrc, spriteCount, spriteCell]);
 
   if (reducedMotion) return null;
   return (

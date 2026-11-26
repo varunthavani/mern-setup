@@ -73,7 +73,7 @@ export default function Closing() {
           {t("sections.closing")}
         </h2>
         <p className="closing__names" data-reveal="fade">
-          {tx(a.name)} <em>&amp;</em> {tx(b.name)}
+          {tx(a.name)} <em>{t("and")}</em> {tx(b.name)}
         </p>
         <div data-reveal="draw">
           <Divider width={180} />

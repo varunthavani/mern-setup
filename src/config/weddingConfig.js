@@ -32,9 +32,9 @@ const weddingConfig = {
    * --------------------------------------------------------------------- */
   couple: {
     groom: {
-      name: { en: "Rakesh", gu: "રાકેશ" }, // SAMPLE
-      fullName: { en: "Chi. Rakesh", gu: "ચિ. રાકેશ" }, // SAMPLE
-      initial: "R", // SAMPLE
+      name: { en: "Maulik", gu: "મૌલિક" },
+      fullName: { en: "Chi. Maulik", gu: "ચિ. મૌલિક" },
+      initial: "M",
       // Parent line shown under the name in the couple section.
       parentsLine: {
         en: "Son of [Groom's Father] & [Groom's Mother]",
@@ -44,9 +44,9 @@ const weddingConfig = {
       photo: null,
     },
     bride: {
-      name: { en: "Pooja", gu: "પૂજા" }, // SAMPLE
-      fullName: { en: "Chi. Pooja", gu: "ચિ. પૂજા" }, // SAMPLE
-      initial: "P", // SAMPLE
+      name: { en: "Radhika", gu: "રાધિકા" },
+      fullName: { en: "Chi. Radhika", gu: "ચિ. રાધિકા" },
+      initial: "R",
       parentsLine: {
         en: "Daughter of [Bride's Father] & [Bride's Mother]",
         gu: "[કન્યાના પિતાશ્રી] અને [કન્યાના માતુશ્રી] ની સુપુત્રી",
@@ -55,17 +55,19 @@ const weddingConfig = {
     },
     // Order of names in headings: "groom-first" or "bride-first".
     nameOrder: "groom-first",
-    // A joint couple photo for the hero. Leave null to show the illustrated
-    // couple artwork (a clearly-labelled placeholder is shown in its place).
-    couplePhoto: null, // e.g. "/assets/couple/couple.webp"
-    hashtag: "#RakeshWedsPooja", // SAMPLE
+    // Joint couple photo shown inside the royal arch frame of the Couple
+    // section (built by `npm run assets:couple`). The optional srcSet lets
+    // phones download the smaller copy. Leave null to show an empty arch.
+    couplePhoto: "/assets/couple/couple.webp",
+    couplePhotoSrcSet: "/assets/couple/couple-sm.webp 560w, /assets/couple/couple.webp 853w",
+    hashtag: "#MaulikWedsRadhika",
   },
 
   /* ------------------------------------------------------------------------
    * Main wedding moment (used by countdown, scratch card, Save the Date)
    * --------------------------------------------------------------------- */
   wedding: {
-    date: "2027-02-24", // SAMPLE
+    date: "2027-02-22", // SAMPLE
     time: "19:30", // SAMPLE — Hast Melap muhurat
     endTime: "23:00",
     timezone: "Asia/Kolkata",
@@ -319,7 +321,7 @@ const weddingConfig = {
       art: "kankotri",
       theme: "kumkum",
       name: { en: "Kankotri Lekhan", gu: "કંકોત્રી લેખન" },
-      date: "2027-02-14", // SAMPLE
+      date: "2027-02-12", // SAMPLE
       startTime: "10:00",
       endTime: "12:00",
       venueId: "home",
@@ -336,7 +338,7 @@ const weddingConfig = {
       art: "ganesh",
       theme: "divine",
       name: { en: "Ganesh Sthapana", gu: "ગણેશ સ્થાપના" },
-      date: "2027-02-20", // SAMPLE
+      date: "2027-02-18", // SAMPLE
       startTime: "09:00",
       endTime: "11:00",
       venueId: "home",
@@ -353,7 +355,7 @@ const weddingConfig = {
       art: "mandap",
       theme: "marigold",
       name: { en: "Mandap Muhurat", gu: "માંડવા મુહૂર્ત" },
-      date: "2027-02-20", // SAMPLE
+      date: "2027-02-18", // SAMPLE
       startTime: "11:30",
       endTime: "13:00",
       venueId: "home",
@@ -370,7 +372,7 @@ const weddingConfig = {
       art: "havan",
       theme: "agni",
       name: { en: "Grah Shanti", gu: "ગ્રહ શાંતિ" },
-      date: "2027-02-21", // SAMPLE
+      date: "2027-02-19", // SAMPLE
       startTime: "08:30",
       endTime: "11:30",
       venueId: "home",
@@ -387,7 +389,7 @@ const weddingConfig = {
       art: "mehendi",
       theme: "mehndi",
       name: { en: "Mehendi", gu: "મહેંદી" },
-      date: "2027-02-21", // SAMPLE
+      date: "2027-02-19", // SAMPLE
       startTime: "16:00",
       endTime: "20:00",
       venueId: "lawn",
@@ -404,7 +406,7 @@ const weddingConfig = {
       art: "haldi",
       theme: "haldi",
       name: { en: "Pithi (Haldi)", gu: "પીઠી" },
-      date: "2027-02-22", // SAMPLE
+      date: "2027-02-20", // SAMPLE
       startTime: "10:00",
       endTime: "12:30",
       venueId: "home",
@@ -421,7 +423,7 @@ const weddingConfig = {
       art: "mameru",
       theme: "rose",
       name: { en: "Mosalu / Mameru", gu: "મોસાળું / મામેરું" },
-      date: "2027-02-22", // SAMPLE
+      date: "2027-02-20", // SAMPLE
       startTime: "15:00",
       endTime: "17:00",
       venueId: "home",
@@ -438,7 +440,7 @@ const weddingConfig = {
       art: "garba",
       theme: "garba",
       name: { en: "Sangeet & Raas Garba", gu: "સંગીત અને રાસ ગરબા" },
-      date: "2027-02-22", // SAMPLE
+      date: "2027-02-20", // SAMPLE
       startTime: "20:00",
       endTime: "23:59",
       venueId: "lawn",
@@ -455,7 +457,7 @@ const weddingConfig = {
       art: "baraat",
       theme: "royal",
       name: { en: "Jaan Prasthan", gu: "જાન પ્રસ્થાન" },
-      date: "2027-02-24", // SAMPLE
+      date: "2027-02-22", // SAMPLE
       startTime: "16:30",
       endTime: "17:30",
       venueId: "home",
@@ -472,7 +474,7 @@ const weddingConfig = {
       art: "aarti",
       theme: "kumkum",
       name: { en: "Jaan Swagat & Ponkhvanu", gu: "જાન સ્વાગત અને પોંખણું" },
-      date: "2027-02-24", // SAMPLE
+      date: "2027-02-22", // SAMPLE
       startTime: "18:00",
       endTime: "18:45",
       venueId: "palace",
@@ -489,7 +491,7 @@ const weddingConfig = {
       art: "jaimala",
       theme: "rose",
       name: { en: "Jaimala", gu: "જયમાળા" },
-      date: "2027-02-24", // SAMPLE
+      date: "2027-02-22", // SAMPLE
       startTime: "19:00",
       endTime: "19:30",
       venueId: "palace",
@@ -506,7 +508,7 @@ const weddingConfig = {
       art: "hastmelap",
       theme: "sacred",
       name: { en: "Hast Melap", gu: "હસ્ત મેળાપ" },
-      date: "2027-02-24", // SAMPLE
+      date: "2027-02-22", // SAMPLE
       startTime: "19:30",
       endTime: "20:30",
       venueId: "palace",
@@ -523,7 +525,7 @@ const weddingConfig = {
       art: "fera",
       theme: "agni",
       name: { en: "Mangal Fera & Saptapadi", gu: "મંગળ ફેરા અને સપ્તપદી" },
-      date: "2027-02-24", // SAMPLE
+      date: "2027-02-22", // SAMPLE
       startTime: "20:30",
       endTime: "21:30",
       venueId: "palace",
@@ -540,7 +542,7 @@ const weddingConfig = {
       art: "thali",
       theme: "marigold",
       name: { en: "Wedding Feast", gu: "લગ્ન ભોજન સમારંભ" },
-      date: "2027-02-24", // SAMPLE
+      date: "2027-02-22", // SAMPLE
       startTime: "20:00",
       endTime: "23:00",
       venueId: "palace",
@@ -557,7 +559,7 @@ const weddingConfig = {
       art: "vidai",
       theme: "dusk",
       name: { en: "Vidai", gu: "વિદાય" },
-      date: "2027-02-25",
+      date: "2027-02-23",
       startTime: "00:30",
       endTime: "01:30",
       venueId: "palace",
@@ -574,7 +576,7 @@ const weddingConfig = {
       art: "grihapravesh",
       theme: "kumkum",
       name: { en: "Griha Pravesh", gu: "ગૃહ પ્રવેશ" },
-      date: "2027-02-25",
+      date: "2027-02-23",
       startTime: "10:00",
       endTime: "11:00",
       venueId: "home",
@@ -591,7 +593,7 @@ const weddingConfig = {
       art: "reception",
       theme: "royal",
       name: { en: "Wedding Reception", gu: "સ્વાગત સમારંભ" },
-      date: "2027-02-26", // SAMPLE
+      date: "2027-02-24", // SAMPLE
       startTime: "19:30",
       endTime: "23:00",
       venueId: "palace",
@@ -670,7 +672,7 @@ const weddingConfig = {
     enabled: true,
     // International format, digits only, no "+" — e.g. "919876543210"
     whatsappNumber: "910000000000", // SAMPLE — replace before sharing!
-    deadline: "2027-02-10", // SAMPLE — leave "" to hide
+    deadline: "2027-02-08", // SAMPLE — leave "" to hide
     maxGuests: 10,
     // Optional external form (Google Forms etc.). When set, an extra
     // "Open RSVP form" link is shown.
@@ -758,10 +760,10 @@ const weddingConfig = {
    * --------------------------------------------------------------------- */
   share: {
     // Public URL where the site will be hosted (used for og:url / share).
-    siteUrl: "", // e.g. "https://rakesh-weds-pooja.netlify.app"
-    title: "Rakesh & Pooja · Wedding Invitation", // SAMPLE
+    siteUrl: "", // e.g. "https://maulik-weds-radhika.netlify.app"
+    title: "Maulik & Radhika · Wedding Invitation",
     description:
-      "You are warmly invited to celebrate the wedding of Rakesh & Pooja · 24 February 2027 · Ahmedabad", // SAMPLE
+      "You are warmly invited to celebrate the wedding of Maulik & Radhika · 22 February 2027 · Ahmedabad",
     shareText: {
       en: "You're invited! Open our wedding invitation 💐",
       gu: "આપને સહપરિવાર આમંત્રણ! અમારી લગ્ન કંકોત્રી ખોલો 💐",

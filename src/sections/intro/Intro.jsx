@@ -62,12 +62,14 @@ export default function Intro() {
         gsap.to(q(".curtains"), { opacity: 0, duration: 0.6, onComplete: finish });
         return;
       }
+      // The velvet panels gather towards the sides and are drawn off-stage
+      // while the hero's tied-back drapes slide into place behind them.
       const tl = gsap.timeline({ onComplete: finish, delay: 0.25 });
       tl.to(q(".curtains__glow"), { opacity: 0.9, duration: 0.6 })
-        .to(q(".curtain--l"), { scaleX: 0.3, xPercent: -20, skewY: 2, duration: 2.8, ease: "power3.inOut" }, 0.2)
-        .to(q(".curtain--r"), { scaleX: 0.3, xPercent: 20, skewY: -2, duration: 2.8, ease: "power3.inOut" }, 0.2)
+        .to(q(".curtain--l"), { scaleX: 0.55, xPercent: -95, duration: 2.8, ease: "power3.inOut" }, 0.2)
+        .to(q(".curtain--r"), { scaleX: 0.55, xPercent: 95, duration: 2.8, ease: "power3.inOut" }, 0.2)
         .to(q(".curtains__glow"), { opacity: 0, duration: 1.4 }, 1.4)
-        .to(q(".curtain"), { opacity: 0, duration: 0.8, ease: "power1.in" }, 2.4);
+        .to(q(".curtain"), { opacity: 0, duration: 0.6, ease: "power1.in" }, 2.4);
       tlRef.current = tl;
     }, root);
     return () => ctx.revert();
@@ -111,7 +113,7 @@ export default function Intro() {
         <div className="cover">
           <div className="cover__backdrop" aria-hidden="true" />
           <Particles petals={0} gold={36} className="cover__particles" />
-          <button type="button" className="cover__card" onClick={open} aria-label={`${t("openInvitation")} — ${tx(a.name)} & ${tx(b.name)}`}>
+          <button type="button" className="cover__card" onClick={open} aria-label={`${t("openInvitation")} — ${tx(a.name)} ${t("and")} ${tx(b.name)}`}>
             <span className="cover__light" aria-hidden="true" />
             <span className="flap flap--l" aria-hidden="true">
               <span className="flap__face" />

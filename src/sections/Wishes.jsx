@@ -18,7 +18,7 @@ export default function Wishes() {
 
   const send = (e) => {
     e.preventDefault();
-    const body = `${tx(a.name)} & ${tx(b.name)}\n\n${text.trim() || t("wishPrompt")}${name.trim() ? `\n\n— ${name.trim()}` : ""}`;
+    const body = `${tx(a.name)} ${t("and")} ${tx(b.name)}\n\n${text.trim() || t("wishPrompt")}${name.trim() ? `\n\n— ${name.trim()}` : ""}`;
     window.open(whatsappUrl(config.wishes.whatsappNumber, body), "_blank", "noopener");
   };
 

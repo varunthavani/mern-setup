@@ -47,7 +47,7 @@ export default function Rsvp() {
     setError("");
     const chosen = events.filter((c) => picked.has(c.id)).map((c) => `• ${tx(c.name)}`);
     const lines = [
-      `RSVP — ${tx(a.name)} & ${tx(b.name)}`,
+      `RSVP — ${tx(a.name)} ${t("and")} ${tx(b.name)}`,
       ``,
       `${t("guestName")}: ${name.trim()}`,
       `${t("attending")} ${t(answer)}`,

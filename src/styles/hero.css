@@ -1,0 +1,1012 @@
+/* ==========================================================================
+   Hero — royal palace courtyard
+   Layer order (z-index inside the isolated .hero):
+     0 sky · 1 palace · 2 readability haze · 3 garden · 4 fountain
+     5 foreground flowers · 6 drapes & valance · 7 text · 8 particles · 9 cue
+   ========================================================================== */
+.hero {
+  --maroon: #650d1b;
+  --maroon-deep: #4a0812;
+  --antique: #c49a48;
+  --royal-ivory: #fff3dd;
+  --champagne: #e7c99b;
+  --rose: #dda3a5;
+  --garden: #526044;
+  --gold-ink: #7a5320;
+
+  /*
+   * Arch sizing model
+   * -----------------
+   * The palace art (1800 × 892, the portrait crop shares its scale) has one
+   * central scalloped arch. The invitation text box is a fixed rectangle
+   * inside that opening, so the palace, the inner-arch panel and the text are
+   * all derived from ONE length: --text-h, the height of the text box.
+   *
+   *   text box  = x 751…1053, y 312…742 of the palace  (302 × 430 units)
+   *   --text-h  = the smaller of the height left between the valance and the
+   *               fountain zone, and the height allowed by --text-w-max
+   *
+   * Every viewport therefore gets the largest arch that fits — no overflow,
+   * no scrolling — and the text (sized in container units) scales with it.
+   * --valance-h lives on :root (intro.css) because the intro shares it.
+   */
+  --nav-space: calc(var(--nav-h) + var(--safe-b));
+  /* ground line where the fountain, plinths and palace steps stand */
+  --ground: calc(var(--nav-space) + clamp(10px, 2.4svh, 26px));
+  --top-base: calc(var(--valance-h) + var(--safe-t) + 4px);
+  --fountain-min: clamp(84px, 21svh, 240px);
+  /* share of --text-h kept free above the text so the carved crown shows */
+  --crown: 0.2;
+  /* how much of any spare height goes above the arch (rest to the fountain) */
+  --slack-k: 0.6;
+  --text-w-max: min(30vw, 440px);
+
+  --avail: calc(100svh - var(--top-base) - var(--ground) - var(--fountain-min));
+  --text-h: min(calc(var(--avail) / (1 + var(--crown))), calc(var(--text-w-max) * 1.4238));
+  --arch-h: calc(var(--text-h) / 0.48206);
+  --arch-w: calc(var(--arch-h) * 2.01794);
+  --text-w: calc(var(--arch-h) * 0.33857);
+  --slack: max(0px, var(--avail) - var(--text-h) * (1 + var(--crown)));
+  --text-top: calc(var(--top-base) + var(--text-h) * var(--crown) + var(--slack) * var(--slack-k));
+  --arch-top: calc(var(--text-top) - var(--arch-h) * 0.34978);
+  --text-bottom: calc(var(--text-top) + var(--text-h));
+
+  --curtain-h: min(100svh, 1300px);
+  --curtain-top: 0px;
+  --curtain-x: 0px;
+
+  position: relative;
+  isolation: isolate;
+  height: 100vh;
+  height: 100svh;
+  min-height: 460px;
+  overflow: hidden;
+  overflow: clip;
+  background: var(--royal-ivory);
+  text-align: center;
+}
+
+.hero__scene {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 60%;
+}
+.hero__scene img,
+.hero__stage img {
+  max-width: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+.hero__layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- 1 · sky, ambient light & marble floor ---------- */
+.hero__sky {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(239, 214, 170, 0) 0%, rgba(239, 214, 170, 0) 70%, #efdcbc 84%, #e9d1a8 100%),
+    linear-gradient(180deg, #f7e3c0 0%, #fff3dd 30%, #fdf0d8 62%, #f5e4c4 100%);
+}
+.hero__sun {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 42% 38% at 50% 34%, rgba(255, 246, 222, 1), rgba(255, 233, 186, 0.55) 45%, rgba(255, 233, 186, 0) 72%),
+    radial-gradient(ellipse 90% 30% at 50% 100%, rgba(196, 154, 72, 0.18), transparent 70%);
+}
+
+/* ---------- 2 · palace ---------- */
+.hero__palace-wrap {
+  z-index: 1;
+}
+.hero__arch {
+  position: absolute;
+  left: 50%;
+  top: var(--arch-top);
+  width: var(--arch-w);
+  height: var(--arch-h);
+  translate: -50% 0;
+}
+.hero__arch picture {
+  position: absolute;
+  inset: 0;
+}
+.hero__palace {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 30px rgba(150, 100, 40, 0.18));
+}
+/* the portrait source is the centre 820 px of the same artwork, same scale */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .hero__palace {
+    left: 27.194%;
+    width: 45.556%;
+  }
+}
+/* inner arch panel: palace x 729…1075, y 268…761 */
+.hero__panel {
+  position: absolute;
+  left: 40.5%;
+  top: 30.045%;
+  width: 19.222%;
+  height: 55.27%;
+  overflow: visible;
+  filter: drop-shadow(0 0 6px rgba(255, 226, 160, 0.55));
+}
+/* soft warm light around the arch; the panel itself carries legibility */
+.hero__haze {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 34% 30% at 50% 30%, rgba(255, 247, 230, 0.5), rgba(255, 247, 230, 0) 75%),
+    linear-gradient(180deg, rgba(255, 245, 225, 0.25), rgba(255, 245, 225, 0) 45%);
+}
+
+/* ---------- 3 · garden: cypress, pedestals & lanterns ---------- */
+.hero__garden {
+  z-index: 3;
+}
+/* cypresses stand in front of the side arches, flanking the central one */
+.hero__cypress {
+  position: absolute;
+  bottom: calc(var(--ground) + clamp(6px, 2svh, 30px));
+  height: clamp(160px, calc(var(--arch-h) * 0.4), 440px);
+  width: auto;
+  translate: -50% 0;
+  transform-origin: 50% 100%;
+  animation: hero-sway 9s ease-in-out infinite;
+}
+.hero__cypress--l {
+  left: calc(50% - var(--arch-w) * 0.232);
+}
+.hero__cypress--r {
+  left: calc(50% + var(--arch-w) * 0.232);
+  animation-delay: -4s;
+}
+.hero__plinth {
+  position: absolute;
+  bottom: calc(var(--ground) - 4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: clamp(64px, calc(var(--arch-h) * 0.11), 130px);
+  translate: -50% 0;
+}
+.hero__plinth--l {
+  left: calc(50% - var(--arch-w) * 0.285);
+}
+.hero__plinth--r {
+  left: calc(50% + var(--arch-w) * 0.285);
+}
+.hero__lamp {
+  position: relative;
+  width: 58%;
+  height: auto;
+  margin-bottom: -3%;
+  filter: drop-shadow(0 0 14px rgba(255, 190, 90, 0.55));
+}
+.hero__pedestal {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 12px 14px rgba(110, 70, 20, 0.22));
+}
+.hero__plinth .lantern-glow {
+  top: -6%;
+  width: 180%;
+}
+
+.lantern-glow {
+  position: absolute;
+  left: 50%;
+  aspect-ratio: 1;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 214, 130, 0.62), rgba(255, 196, 96, 0.22) 40%, rgba(255, 196, 96, 0) 70%);
+  mix-blend-mode: screen;
+  animation: lantern-flicker 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ---------- 4 · fountain (between the date and the ground, never above it) ---------- */
+.hero__stage {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  top: calc(var(--text-bottom) + clamp(4px, 1.2svh, 14px));
+  bottom: var(--ground);
+}
+.fountain {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-inline: auto;
+  /* as large as the free space allows: never taller than the stage, never
+     wider than the inner arch's base, never larger than 440x332 */
+  height: min(100%, calc(var(--text-w) * 0.95), 332px);
+  aspect-ratio: 900 / 678;
+}
+.fountain__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 14px 20px rgba(120, 80, 30, 0.25));
+}
+.fountain__fall,
+.fountain__jet,
+.fountain__ripple {
+  position: absolute;
+  pointer-events: none;
+}
+.fountain__fall {
+  overflow: hidden;
+  mix-blend-mode: screen;
+  opacity: 0.8;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 25%, #000 70%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 25%, #000 70%, transparent);
+}
+.fountain__fall::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -60px;
+  bottom: 0;
+  background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0) 0 12px, rgba(255, 255, 255, 0.95) 12px 19px, rgba(255, 255, 255, 0) 19px 30px);
+  -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 1.5px, transparent 1.5px 6px);
+  mask-image: repeating-linear-gradient(90deg, #000 0 1.5px, transparent 1.5px 6px);
+  animation: water-fall 0.55s linear infinite;
+}
+.fountain__fall--1 {
+  left: 40%;
+  width: 20%;
+  top: 14%;
+  height: 13%;
+}
+.fountain__fall--2 {
+  left: 33%;
+  width: 34%;
+  top: 31%;
+  height: 16%;
+}
+.fountain__fall--2::before {
+  animation-duration: 0.65s;
+}
+.fountain__fall--3 {
+  left: 22%;
+  width: 56%;
+  top: 53%;
+  height: 19%;
+}
+.fountain__fall--3::before {
+  animation-duration: 0.75s;
+}
+.fountain__jet {
+  left: 46%;
+  width: 8%;
+  top: -1%;
+  height: 16%;
+  border-radius: 50% 50% 40% 40%;
+  background: radial-gradient(ellipse 50% 60% at 50% 40%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 70%);
+  transform-origin: 50% 100%;
+  animation: water-jet 1.6s ease-in-out infinite;
+}
+.fountain__ripple {
+  left: 18%;
+  width: 64%;
+  top: 66%;
+  height: 12%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.5) 58%, rgba(255, 255, 255, 0) 70%);
+  mix-blend-mode: screen;
+  animation: water-ripple 3.2s ease-out infinite;
+}
+
+/* ---------- 5 · foreground flowers & greenery ---------- */
+.hero__front {
+  z-index: 5;
+}
+.hero__front img {
+  position: absolute;
+  height: auto;
+  transform-origin: 50% 100%;
+}
+.hero__bouquet {
+  /* rests on the nav bar: fully visible, never tucked behind it */
+  bottom: calc(var(--nav-space) - 4px);
+  width: clamp(190px, min(27vw, 50svh), 500px);
+  rotate: 0deg;
+  animation: hero-sway 7s ease-in-out infinite;
+  filter: drop-shadow(0 10px 14px rgba(80, 40, 20, 0.2));
+}
+.hero__bouquet--l {
+  left: max(-60px, -4vw);
+}
+.hero__bouquet--r {
+  right: max(-60px, -4vw);
+  animation-delay: -3.5s;
+}
+.hero__plants {
+  bottom: calc(var(--nav-space) + clamp(16px, 3svh, 50px));
+  width: clamp(150px, min(20vw, 36svh), 360px);
+  animation: hero-sway 8s ease-in-out infinite;
+  animation-delay: -2s;
+  opacity: 0.96;
+}
+.hero__plants--l {
+  left: clamp(40px, 7vw, 140px);
+}
+.hero__plants--r {
+  right: clamp(40px, 7vw, 140px);
+  scale: -1 1;
+  animation-delay: -5s;
+}
+
+/* ---------- 6 · drapes, valance & hanging lanterns ---------- */
+.hero__drapes {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+}
+.hero__curtain {
+  position: absolute;
+  top: var(--curtain-top);
+  height: var(--curtain-h);
+  width: auto;
+  filter: drop-shadow(0 12px 22px rgba(60, 8, 16, 0.35));
+}
+.hero__curtain--l {
+  left: var(--curtain-x);
+}
+.hero__curtain--r {
+  right: var(--curtain-x);
+}
+.hero__hang {
+  position: absolute;
+  top: calc(var(--valance-h) * 0.35);
+  width: clamp(40px, min(5.2vw, 9svh), 88px);
+}
+.hero__hang img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 50% 0;
+  animation: lantern-swing 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 16px rgba(255, 190, 90, 0.5));
+}
+.hero__hang--l {
+  left: clamp(200px, 24vw, 470px);
+}
+.hero__hang--r {
+  right: clamp(200px, 24vw, 470px);
+}
+.hero__hang--r img {
+  animation-delay: -3s;
+}
+.hero__hang .lantern-glow {
+  top: 40%;
+  width: 260%;
+}
+.hero .valance {
+  z-index: 2;
+}
+
+/* royal chandelier: hangs from behind the valance into the arch crown, and
+   is sized to the free space above the blessing line so it never meets it */
+.hero__chandelier {
+  --chand-top: calc(var(--safe-t) + var(--valance-h) * 0.9);
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: var(--chand-top);
+  height: max(0px, min(calc(var(--text-w) * 0.36), 150px, calc(var(--text-top) - var(--chand-top) - 10px)));
+  aspect-ratio: 520 / 627;
+  translate: -50% 0;
+}
+.hero__chandelier img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 0;
+  animation: chandelier-swing 7s ease-in-out infinite;
+  filter: drop-shadow(0 0 0.8px rgba(92, 54, 10, 0.75)) drop-shadow(0 5px 7px rgba(110, 65, 15, 0.32));
+}
+.hero__chandelier-glow {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 210%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 226, 150, 0.5), rgba(255, 210, 120, 0.16) 40%, rgba(255, 210, 120, 0) 68%);
+  animation: lantern-flicker 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes chandelier-swing {
+  0%,
+  100% {
+    rotate: -1.6deg;
+  }
+  50% {
+    rotate: 1.6deg;
+  }
+}
+
+/* ---------- 7 · invitation text (exactly inside the central arch) ---------- */
+/*
+ * The box is the arch opening's text area; every size below is in container
+ * units of it (1cqw = 1% of its width), so the whole invitation scales with
+ * the arch and can never spill past the pillars or under the fountain.
+ */
+.hero__content {
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  top: var(--text-top);
+  width: var(--text-w);
+  height: var(--text-h);
+  margin-left: calc(var(--text-w) / -2);
+  container-type: size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 2.5cqw 0 0;
+}
+
+.hero__eyebrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6cqw;
+  margin: 0;
+  color: var(--maroon);
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 600;
+  font-size: max(6.6cqw, 12px);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+html[data-lang="gu"] .hero__eyebrow {
+  font-family: var(--f-gu);
+  font-style: normal;
+  font-weight: 600;
+  font-size: max(5.7cqw, 12px);
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+}
+.hero__eyebrow-text {
+  white-space: nowrap;
+}
+/* fine gold rule with a centre diamond */
+.hero__rule {
+  position: relative;
+  width: 62cqw;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--antique) 18%, var(--antique) 82%, transparent);
+}
+.hero__rule::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  rotate: 45deg;
+  background: var(--antique);
+  left: 50%;
+  width: 2.2cqw;
+  height: 2.2cqw;
+  margin: -1.1cqw 0 0 -1.1cqw;
+  box-shadow: 0 0 0 1.5px var(--royal-ivory), 0 0 0 2.2px rgba(196, 154, 72, 0.6);
+}
+
+.hero__mono {
+  position: relative;
+  flex: none;
+  /* small medallion with clear breathing room above the names */
+  margin: 2cqw 0 3.5cqw;
+}
+.hero__mono .monogram {
+  --size: min(19cqw, 13cqh) !important;
+  filter: drop-shadow(0 0 0.6px rgba(110, 70, 20, 0.85)) drop-shadow(0 1px 1px rgba(122, 83, 32, 0.4));
+}
+.hero__mono::before {
+  /* ivory medallion with a fine double gold ring, so the monogram reads
+     clearly against the carved palace behind it */
+  content: "";
+  position: absolute;
+  inset: -5%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, #fffdf6 0%, #fff6e2 62%, #f7e6c2 100%);
+  box-shadow:
+    inset 0 0 0 2px #b8893c,
+    inset 0 0 0 4.5px rgba(255, 250, 238, 0.95),
+    inset 0 0 0 5.5px rgba(184, 137, 60, 0.75),
+    0 4px 14px rgba(122, 83, 32, 0.22),
+    0 0 22px rgba(255, 232, 180, 0.7);
+}
+.hero__mono .monogram__letters {
+  background: linear-gradient(110deg, #4a2c0a 0%, #7d5820 30%, #c99a45 46%, #7d5820 62%, #4a2c0a 100%);
+  background-size: 240% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gold-shimmer 6s ease-in-out infinite;
+}
+.hero__mono-glow {
+  position: absolute;
+  inset: -40%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 226, 160, 0.85), rgba(255, 226, 160, 0) 65%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* names always stack — "Maulik / and / Radhika" — as in the arch reference */
+.hero__names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  color: var(--maroon);
+  font-family: var(--f-script);
+  font-weight: 400;
+  font-size: 21cqw;
+  line-height: 1.02;
+}
+html[data-lang="gu"] .hero__names {
+  font-family: var(--f-gu);
+  font-weight: 700;
+  font-size: 16.6cqw;
+  line-height: 1.22;
+}
+.hero__name {
+  display: inline-block;
+  padding: 0 0.06em 0.04em;
+  white-space: nowrap;
+  text-shadow: 0 1px 0 rgba(255, 236, 200, 0.9), 0 0 22px rgba(255, 246, 228, 0.95), 0 5px 14px rgba(101, 13, 27, 0.14);
+}
+.hero__name .char {
+  display: inline-block;
+}
+.hero__amp {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0 0.08em 0.06em;
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-size: 0.52em;
+  line-height: 1;
+  background: linear-gradient(110deg, #7a5320 0%, #b8893c 38%, #ecc97c 50%, #b8893c 62%, #7a5320 100%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gold-shimmer 5s ease-in-out infinite;
+}
+/* gold flourishes either side of "and" / "અને" */
+.hero__amp::before,
+.hero__amp::after {
+  content: "";
+  width: 1.5em;
+  height: 0.5em;
+  background:
+    radial-gradient(circle at 100% 50%, var(--antique) 0 0.07em, transparent 0.08em),
+    linear-gradient(90deg, transparent, var(--antique)) 0 50% / 82% 1px no-repeat;
+}
+.hero__amp::after {
+  scale: -1 1;
+}
+/* Gujarati joins the names with "અને" rather than a script ampersand */
+html[data-lang="gu"] .hero__amp {
+  font-family: var(--f-gu);
+  font-weight: 600;
+  font-size: 0.36em;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  padding: 0.05em 0.1em;
+}
+html[data-lang="gu"] .hero__amp::before,
+html[data-lang="gu"] .hero__amp::after {
+  width: 2.4em;
+  height: 0.8em;
+}
+
+.hero__flourish {
+  display: block;
+  width: 44cqw;
+  height: auto;
+}
+.hero__tagline {
+  margin: 0;
+  color: #5c1d15;
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: max(4.7cqw, 11px);
+  line-height: 1.3;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+html[data-lang="gu"] .hero__tagline {
+  font-family: var(--f-gu);
+  font-weight: 600;
+  font-size: max(7cqw, 13px);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+.hero__lotus {
+  display: block;
+  width: 38cqw;
+  height: auto;
+}
+
+/* maroon date pill — may reach slightly past the text box: the arch base is
+   wider than the text area (the panel spans 115cqw) */
+.hero__date {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  margin: 0;
+  padding: 0.5em 1.5em 0.54em 1.3em;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: linear-gradient(180deg, #7d1527 0%, var(--maroon) 55%, var(--maroon-deep) 100%);
+  color: var(--royal-ivory);
+  font-family: var(--f-serif);
+  font-weight: 600;
+  font-size: max(6.2cqw, 13px);
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  box-shadow:
+    inset 0 0 0 1.5px var(--antique),
+    inset 0 0 0 4px var(--maroon),
+    inset 0 0 0 5px rgba(231, 201, 155, 0.55),
+    0 8px 20px rgba(101, 13, 27, 0.28);
+}
+html[data-lang="gu"] .hero__date {
+  font-family: var(--f-gu);
+  font-size: max(5.1cqw, 12.5px);
+  letter-spacing: 0;
+}
+.hero__date-icon {
+  flex: none;
+  width: 1.2em;
+  height: 1.2em;
+  color: var(--champagne);
+  stroke-width: 1.8;
+}
+/* gold diamond finials at both ends of the pill */
+.hero__date::before,
+.hero__date::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 0.5em;
+  height: 0.5em;
+  margin-top: -0.25em;
+  rotate: 45deg;
+  background: linear-gradient(135deg, #f3d68b, var(--antique));
+  box-shadow: 0 0 0 1px rgba(122, 83, 32, 0.35);
+}
+.hero__date::before {
+  left: -0.25em;
+}
+.hero__date::after {
+  right: -0.25em;
+}
+
+
+/* ---------- 8 · particles ---------- */
+.hero__particles {
+  z-index: 8;
+  /* petals drift past the sides, never across the names and date */
+  -webkit-mask: linear-gradient(90deg, #000 0%, #000 22%, transparent 36%, transparent 64%, #000 78%, #000 100%);
+  mask: linear-gradient(90deg, #000 0%, #000 22%, transparent 36%, transparent 64%, #000 78%, #000 100%);
+}
+@media (max-width: 640px) {
+  .hero__particles {
+    -webkit-mask: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.12) 18%, rgba(0, 0, 0, 0.12) 82%, #000 100%);
+    mask: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, 0.12) 18%, rgba(0, 0, 0, 0.12) 82%, #000 100%);
+  }
+}
+
+/* ---------- 9 · scroll cue & transition border ---------- */
+.hero__cue {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--nav-space) + 8px);
+  translate: -50% 0;
+  z-index: 10; /* in front of the lotus border */
+  /* compact gold-ringed medallion; the label stays for screen readers */
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 252, 244, 0.96), rgba(248, 232, 205, 0.94));
+  box-shadow:
+    inset 0 0 0 1px var(--antique),
+    inset 0 0 0 3px rgba(255, 248, 234, 0.9),
+    inset 0 0 0 4px rgba(196, 154, 72, 0.45),
+    0 4px 14px rgba(101, 60, 20, 0.22);
+  color: var(--maroon);
+  text-decoration: none;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s;
+}
+.hero__cue::before {
+  /* slow halo that invites the guest onward */
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid rgba(196, 154, 72, 0.55);
+  animation: cue-halo 2.8s ease-out infinite;
+  pointer-events: none;
+}
+.hero__cue:hover,
+.hero__cue:focus-visible {
+  transform: translateY(2px);
+}
+.hero__cue span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.hero__cue svg {
+  animation: bob 1.8s ease-in-out infinite;
+}
+@keyframes cue-halo {
+  0% {
+    opacity: 0.9;
+    scale: 0.92;
+  }
+  100% {
+    opacity: 0;
+    scale: 1.35;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__cue::before {
+    animation: none;
+    opacity: 0;
+  }
+}
+.hero__border {
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  translate: -50% 0;
+  z-index: 9;
+  width: min(100%, 1100px);
+  height: auto;
+  pointer-events: none;
+}
+.hero::after {
+  /* melts the marble floor into the next section's ivory */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 28px;
+  z-index: 8;
+  background: linear-gradient(180deg, rgba(255, 245, 229, 0), var(--c-ivory));
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Responsive compositions
+   ========================================================================== */
+
+/*
+ * Every layout below only tunes the sizing inputs (--text-w-max,
+ * --fountain-min, --crown, --slack-k) and the side decorations; the arch,
+ * text and fountain keep deriving their geometry from them.
+ */
+
+/* Short laptop windows (1280x585 – 1366x680 after browser toolbars) */
+@media (min-width: 641px) and (max-height: 680px) {
+  .hero {
+    --fountain-min: clamp(76px, 18svh, 230px);
+    --crown: 0.17;
+  }
+}
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .hero {
+    --text-w-max: 40vw;
+    --curtain-h: min(88svh, 1000px);
+  }
+  .hero__hang--l {
+    left: 18vw;
+  }
+  .hero__hang--r {
+    right: 18vw;
+  }
+}
+
+/* Tablet portrait: taller canvas, larger arch and fountain */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .hero {
+    --text-w-max: 54vw;
+    --fountain-min: clamp(150px, 20svh, 280px);
+    --curtain-h: min(62svh, 820px);
+    --curtain-x: calc(var(--curtain-h) * -0.06);
+  }
+  .hero__hang,
+  .hero__plinth {
+    display: none;
+  }
+}
+
+/* Phones — dedicated portrait composition */
+@media (max-width: 640px) {
+  .hero {
+    --text-w-max: 66vw;
+    --fountain-min: clamp(120px, 19svh, 230px);
+    --crown: 0.2;
+    --slack-k: 0.65;
+    --curtain-h: clamp(360px, 56svh, 540px);
+    --curtain-top: calc(var(--curtain-h) * -0.2);
+    --curtain-x: calc(var(--curtain-h) * -0.12);
+  }
+  .hero__cypress {
+    height: clamp(150px, 27svh, 250px);
+    bottom: calc(var(--ground) + 24px);
+  }
+  .hero__cypress--l {
+    left: 4vw;
+  }
+  .hero__cypress--r {
+    left: 96vw;
+  }
+  .hero__plinth,
+  .hero__plants,
+  .hero__hang {
+    display: none;
+  }
+  .hero__bouquet {
+    width: min(52vw, 28svh);
+    bottom: calc(var(--nav-space) - 4px);
+  }
+  .hero__bouquet--l {
+    left: -13vw;
+  }
+  .hero__bouquet--r {
+    right: -13vw;
+  }
+}
+
+/* Short phones (360x640 – 390x700): keep the fountain modest, the arch large */
+@media (max-width: 640px) and (max-height: 720px) {
+  .hero {
+    --fountain-min: clamp(100px, 17svh, 200px);
+    --crown: 0.2;
+  }
+}
+
+/* Phones on their side: short and wide — the arch takes the full height */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    --fountain-min: 0px;
+    --crown: 0.04;
+    --text-w-max: 44vw;
+    --curtain-h: 100svh;
+  }
+  .hero__stage,
+  .hero__hang,
+  .hero__chandelier,
+  .hero__plinth {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Motion
+   ========================================================================== */
+@keyframes hero-sway {
+  0%,
+  100% {
+    rotate: -0.7deg;
+  }
+  50% {
+    rotate: 0.7deg;
+  }
+}
+@keyframes lantern-swing {
+  0%,
+  100% {
+    rotate: -2deg;
+  }
+  50% {
+    rotate: 2deg;
+  }
+}
+@keyframes lantern-flicker {
+  0%,
+  100% {
+    opacity: 0.85;
+    scale: 1;
+  }
+  35% {
+    opacity: 1;
+    scale: 1.06;
+  }
+  60% {
+    opacity: 0.72;
+    scale: 0.97;
+  }
+}
+/* Ambient loops (sway, flicker, water, gold shimmer) run only while the hero
+   is on screen — the shimmer repaints text every frame, the rest still costs
+   compositor work and battery while visitors read further down. */
+.hero:not(.is-live) *,
+.hero:not(.is-live) *::before,
+.hero:not(.is-live) *::after {
+  animation-play-state: paused !important;
+}
+
+@keyframes gold-shimmer {
+  0%,
+  100% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes water-fall {
+  to {
+    transform: translateY(30px);
+  }
+}
+@keyframes water-jet {
+  0%,
+  100% {
+    transform: scaleY(0.88);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scaleY(1.06);
+    opacity: 1;
+  }
+}
+@keyframes water-ripple {
+  from {
+    transform: scale(0.75);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero *,
+  .hero *::before,
+  .hero *::after {
+    animation: none !important;
+  }
+}

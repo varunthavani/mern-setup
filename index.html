@@ -30,6 +30,14 @@
     <link rel="preload" as="image" href="/assets/invitation/flap.webp" media="(min-width: 701px)" />
     <link rel="preload" as="image" href="/assets/invitation/flap-r.webp" media="(min-width: 701px)" />
     <link rel="preload" as="image" href="/assets/invitation/seal.webp" />
+
+    <!-- Hero stage revealed by the curtains: velvet, valance and palace -->
+    <link rel="preload" as="image" href="/assets/hero/velvet-panel.webp" />
+    <!-- Exactly the file the hero <picture> chooses: the portrait crop on portrait
+         phones/tablets, the full palace everywhere else (palace-md is only the
+         faint Blessings backdrop on portrait screens, so it is never preloaded). -->
+    <link rel="preload" as="image" href="/assets/hero/palace-portrait.webp" media="(max-width: 1024px) and (orientation: portrait)" />
+    <link rel="preload" as="image" href="/assets/hero/palace.webp" media="not all and (max-width: 1024px) and (orientation: portrait)" />
   </head>
   <body>
     <div id="root"></div>

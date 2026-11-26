@@ -44,6 +44,28 @@ async function loadFont(file) {
 }
 
 /** Text → centred SVG path data. */
+/** Largest font size (up to `max`) at which `text` stays within `maxWidth`. */
+function fitSize(font, text, max, maxWidth) {
+  const width = [...text].reduce((w, ch) => w + font.charToGlyph(ch).advanceWidth, 0) * (max / font.unitsPerEm);
+  return width > maxWidth ? Math.floor((max * maxWidth) / width) : max;
+}
+
+/**
+ * SVG path data from opentype.js path commands. (Path#toPathData rounds some
+ * coordinates to "NaN" depending on the exact position, which corrupts glyphs.)
+ */
+function pathData(path) {
+  const n = (v) => (Math.round(v * 100) / 100).toString();
+  return path.commands
+    .map((c) => {
+      if (c.type === "M" || c.type === "L") return `${c.type}${n(c.x)} ${n(c.y)}`;
+      if (c.type === "Q") return `Q${n(c.x1)} ${n(c.y1)} ${n(c.x)} ${n(c.y)}`;
+      if (c.type === "C") return `C${n(c.x1)} ${n(c.y1)} ${n(c.x2)} ${n(c.y2)} ${n(c.x)} ${n(c.y)}`;
+      return "Z";
+    })
+    .join("");
+}
+
 function textPath(font, text, cx, baseline, size, letterSpacing = 0) {
   const glyphs = [...text].map((ch) => font.charToGlyph(ch));
   let width = 0;
@@ -54,7 +76,7 @@ function textPath(font, text, cx, baseline, size, letterSpacing = 0) {
   let x = cx - width / 2;
   let d = "";
   glyphs.forEach((g) => {
-    const pd = g.getPath(x, baseline, size).toPathData(2);
+    const pd = pathData(g.getPath(x, baseline, size));
     if (pd) d += `<path d="${pd}"/>`;
     x += g.advanceWidth * scale + letterSpacing;
   });
@@ -86,11 +108,6 @@ async function main() {
   console.log("  ✓ mirrored right flaps");
   await render("seal", art.seal(), pub("assets/invitation/seal.webp"), { width: 420, quality: 85, alpha: true });
 
-  console.log("Curtains…");
-  await render("curtain panel", art.curtainPanel(), pub("assets/curtains/panel.webp"), { width: 560, quality: 74 });
-  await render("valance", art.valance(), pub("assets/curtains/valance.webp"), { width: 1600, quality: 80, alpha: true });
-  await render("valance (sm)", art.valance(), pub("assets/curtains/valance-sm.webp"), { width: 900, quality: 78, alpha: true });
-  await render("corner drape", art.cornerDrape(), pub("assets/curtains/drape.webp"), { width: 360, quality: 78, alpha: true });
 
   console.log("Backgrounds…");
   await render("garden sky", art.gardenSky(), pub("assets/backgrounds/garden-sky.webp"), { width: 1600, quality: 74 });
@@ -130,7 +147,7 @@ async function main() {
 
   const b64 = async (file) => `data:image/png;base64,${(await sharp(file).png().toBuffer()).toString("base64")}`;
   const og = art.ogImage({
-    namesPath: textPath(script, names, 600, 370, names.length > 20 ? 72 : 86),
+    namesPath: textPath(script, names, 600, 370, fitSize(script, names, 86, 520)),
     subtitlePath: textPath(cinzel, "WEDDING INVITATION", 600, 450, 26, 6) + textPath(cinzel, dateStr, 600, 500, 22, 4),
     monogramPath: textPath(script, `${first.initial}  ${second.initial}`, 600, 210, 92),
     flapHref: await b64(await render("og flap", art.invitationFlap({ frame: true }), path.join(os.tmpdir(), "og-flap.webp"), { width: 320 })),

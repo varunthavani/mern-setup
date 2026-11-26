@@ -8,6 +8,7 @@ import { useReducedMotion } from "../hooks/useReducedMotion.js";
 const AppContext = createContext(null);
 
 const LANG_KEY = "wedding:lang";
+const INTRO_KEY = "wedding:intro";
 
 function readStorage(store, key) {
   try {
@@ -47,10 +48,38 @@ export function AppProvider({ children }) {
     const saved = readStorage("localStorage", LANG_KEY);
     return config.language.available.includes(saved) ? saved : config.language.default;
   });
-  const [phase, setPhase] = useState(config.animation.showIntro ? "cover" : "done");
+  // The cinematic intro plays once per browser session; reloads go straight
+  // to the revealed palace.
+  const [phase, setPhase] = useState(() =>
+    config.animation.showIntro && readStorage("sessionStorage", INTRO_KEY) !== "seen" ? "cover" : "done"
+  );
   const [introRun, setIntroRun] = useState(0);
   const quality = useMemo(() => (reducedMotion ? "lite" : detectQuality()), [reducedMotion]);
   const music = useMusic(config.music);
+
+  useEffect(() => {
+    if (phase === "done") writeStorage("sessionStorage", INTRO_KEY, "seen");
+  }, [phase]);
+
+  // When the intro was skipped for this session there is no "tap to open"
+  // gesture, so music starts on the guest's first interaction instead
+  // (browsers block audio before one). A previous "off" choice is respected
+  // inside music.start(), and taps on the controls are left to the toggle.
+  const musicStart = music.start;
+  const [startedRevealed] = useState(() => phase === "done");
+  const introSkipped = startedRevealed && introRun === 0;
+  useEffect(() => {
+    if (!introSkipped) return undefined;
+    const onFirst = (e) => {
+      if (e.target?.closest?.(".controls")) return;
+      cleanup();
+      musicStart();
+    };
+    const events = ["pointerdown", "keydown"];
+    const cleanup = () => events.forEach((n) => window.removeEventListener(n, onFirst, true));
+    events.forEach((n) => window.addEventListener(n, onFirst, true));
+    return cleanup;
+  }, [introSkipped, musicStart]);
 
   const setLang = useCallback((l) => {
     setLangState(l);

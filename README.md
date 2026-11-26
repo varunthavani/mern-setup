@@ -1,4 +1,4 @@
-# Rakesh & Pooja — Cinematic Gujarati Wedding Invitation
+# Maulik & Radhika — Cinematic Gujarati Wedding Invitation
 
 A static React (Vite) website. It plays like opening a luxury printed invitation: the embossed sage‑green card unseals, silk curtains part onto a royal garden, and the guest scrolls through blessings, rituals, the schedule, venue, RSVP and a closing scene. It works in Gujarati and English.
 
@@ -34,7 +34,7 @@ npm run preview    # serve dist/ locally to check it → http://localhost:4173
 
 ## Deployment
 
-The site expects to be served from the **root of a domain** (e.g. `https://rakesh-weds-pooja.netlify.app/`), because assets are referenced as `/assets/…`.
+The site expects to be served from the **root of a domain** (e.g. `https://maulik-weds-radhika.netlify.app/`), because assets are referenced as `/assets/…`.
 
 * **Netlify:** build command `npm run build`, publish directory `dist`. You can also drag the `dist` folder onto app.netlify.com/drop.
 * **Vercel:** import the repository; the Vite preset is detected (build `npm run build`, output `dist`).

@@ -11,12 +11,16 @@ import "@fontsource/cormorant-garamond/latin-600.css";
 import "@fontsource/cormorant-garamond/latin-400-italic.css";
 import "@fontsource/noto-serif-gujarati/gujarati-400.css";
 import "@fontsource/noto-serif-gujarati/gujarati-600.css";
+import "@fontsource/noto-serif-gujarati/gujarati-700.css";
 import "@fontsource/hind-vadodara/gujarati-400.css";
 import "@fontsource/hind-vadodara/gujarati-500.css";
 
 import "./styles/base.css";
 import "./styles/intro.css";
 import "./styles/sections.css";
+import "./styles/hero.css";
+import "./styles/blessings.css";
+import "./styles/couple.css";
 import "./styles/ceremonies.css";
 
 import config from "./config/weddingConfig.js";

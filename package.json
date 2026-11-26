@@ -12,6 +12,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "assets": "node scripts/build-assets.mjs",
+    "assets:hero": "node scripts/build-hero-assets.mjs",
+    "assets:blessings": "node scripts/build-blessing-assets.mjs",
+    "assets:couple": "node scripts/build-couple-assets.mjs",
     "music": "node scripts/generate-music.mjs mangal-dhun.wav"
   },
   "dependencies": {
