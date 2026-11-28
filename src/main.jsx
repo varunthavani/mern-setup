@@ -21,6 +21,7 @@ import "./styles/sections.css";
 import "./styles/hero.css";
 import "./styles/blessings.css";
 import "./styles/couple.css";
+import "./styles/family.css";
 import "./styles/ceremonies.css";
 
 import config from "./config/weddingConfig.js";

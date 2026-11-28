@@ -15,7 +15,8 @@
     "assets:hero": "node scripts/build-hero-assets.mjs",
     "assets:blessings": "node scripts/build-blessing-assets.mjs",
     "assets:couple": "node scripts/build-couple-assets.mjs",
-    "music": "node scripts/generate-music.mjs mangal-dhun.wav"
+    "music": "node scripts/generate-music.mjs mangal-dhun.wav",
+    "assets:family": "node scripts/build-family-assets.mjs"
   },
   "dependencies": {
     "@fontsource/cinzel": "^5.3.0",
